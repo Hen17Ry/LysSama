@@ -130,7 +130,7 @@ const About: React.FC = () => {
               <div className="relative w-full max-w-xl mx-auto">
                 <div className="aspect-square rounded-3xl overflow-hidden bg-dark-light/30 backdrop-blur-md border border-soft-white/20">
                   <img
-                    src="/sama.jpg"
+                    src="/sama0.jpg"
                     alt="Portrait créatrice"
                     className="w-full h-full object-cover"
                   />
