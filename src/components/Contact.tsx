@@ -109,19 +109,19 @@ const Contact: React.FC = () => {
     {
       icon: Mail,
       label: 'Email',
-      value: 'hello@creatrice.com',
-      link: 'mailto:hello@creatrice.com'
+      value: 'melyssa.kekeli@gmail.com',
+      link: 'mailto:melyssa.kekeli@gmail.com'
     },
     {
       icon: Phone,
       label: 'Téléphone',
-      value: '+33 6 12 34 56 78',
-      link: 'tel:+33612345678'
+      value: '+2290151864239',
+      link: 'tel:+2290151864239'
     },
     {
       icon: MapPin,
       label: 'Localisation',
-      value: 'Paris, France',
+      value: 'Bénin, Cotonou',
       link: '#'
     }
   ];
@@ -130,12 +130,12 @@ const Contact: React.FC = () => {
     {
       icon: Instagram,
       label: 'Instagram',
-      link: 'https://instagram.com'
+      link: 'https://www.instagram.com/lys__sama'
     },
     {
       icon: Linkedin,
       label: 'LinkedIn',
-      link: 'https://linkedin.com'
+      link: 'https://www.linkedin.com/in/melyssacossou'
     },
     {
       icon: Camera,
