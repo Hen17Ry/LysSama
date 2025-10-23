@@ -36,12 +36,13 @@ const Brands: React.FC = () => {
     { name: "Omorfia", src: asset("/logos/Omorfia.jpg") },
     { name: "La flotte 229", src: asset("/logos/flotte.jpg") },
     { name: "Tantie Food", src: asset("/logos/Tantie.jpg") },
+    { name: "Gogotinkpon", src: asset("/logos/gogo.jpg") },
   ];
 
   const stats = [
-    { display: "50+", target: 50, label: "Projets réalisés" },
+    { display: "100+", target: 100, label: "Projets réalisés" },
     { display: "30+", target: 30, label: "Clients satisfaits" },
-    { display: "5+", target: 5, label: "Années d'expérience" },
+    { display: "2+", target: 2, label: "Années d'expérience" },
   ];
 
   useEffect(() => {
