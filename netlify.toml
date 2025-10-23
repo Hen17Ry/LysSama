@@ -1,0 +1,32 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Force HTTPS et canonical (supprime index.html visible)
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+# SPA fallback (si tu utilises un router côté client)
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
+# Sécurité + perf basiques
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Cache-Control = "public, max-age=3600"
+
+# Cache agressif sur assets fingerprintés
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
