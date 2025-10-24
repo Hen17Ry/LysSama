@@ -37,6 +37,7 @@ const Brands: React.FC = () => {
     { name: "La flotte 229", src: asset("/logos/flotte.jpg") },
     { name: "Tantie Food", src: asset("/logos/Tantie.jpg") },
     { name: "Gogotinkpon", src: asset("/logos/gogo.jpg") },
+    { name: "Mister Content", src: asset("/logos/mister.jpg") },
   ];
 
   const stats = [
