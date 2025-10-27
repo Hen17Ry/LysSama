@@ -144,50 +144,75 @@ const Realisations: React.FC = () => {
         <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {projects.map((project) => (
             <div
-              key={project.id}
-              className="project-item group relative cursor-pointer"
-            >
-              <div className="relative overflow-hidden rounded-2xl bg-dark-light/30 backdrop-blur-md border border-soft-white/10 hover:border-primary/30 transition-all duration-500">
-                {/* Image Container */}
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  />
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-soft-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
-                  
-                  {/* Video Play Button */}
-                  {project.hasVideo && (
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110">
-                      <Play size={16} className="text-white ml-0.5" />
-                    </div>
-                  )}
+                key={project.id}
+                className="project-item group relative cursor-pointer"
+              >
+                <div className="relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all duration-500 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)]">
+                  {/* Image */}
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700
+                                brightness-95 group-hover:brightness-75"
+                    />
 
-                  {/* External Link Button */}
-                  <button
-                    onClick={(e) => handleExternalLinkClick(e, project.externalLink)}
-                    className="absolute top-4 left-4 w-10 h-10 bg-dark-light/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:scale-110 duration-300"
-                    aria-label={`Voir ${project.title}`}
-                      >
-                    <ExternalLink size={16} className="text-soft-white" />
+                    {/* Scrim dégradé (assombrit le bas) */}
+                    <div className="absolute inset-0 pointer-events-none
+                                    bg-[linear-gradient(to_top,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.35)_38%,rgba(0,0,0,0)_70%)]
+                                    opacity-90 group-hover:opacity-95 transition-opacity"></div>
+
+                    {/* Bouton Play (optionnel) */}
+                    {project.hasVideo && (
+                      <div className="absolute top-4 right-4 w-10 h-10 bg-primary/90 rounded-full
+                                      flex items-center justify-center opacity-0 group-hover:opacity-100
+                                      transition-all duration-300 hover:scale-110">
+                        <Play size={16} className="text-white ml-0.5" />
+                      </div>
+                    )}
+
+                    {/* Lien externe */}
+                    <button
+                      onClick={(e) => handleExternalLinkClick(e, project.externalLink)}
+                      className="absolute top-4 left-4 w-10 h-10 bg-black/40 rounded-full backdrop-blur
+                                flex items-center justify-center opacity-0 group-hover:opacity-100
+                                transition-all duration-300 hover:bg-primary hover:scale-110"
+                      aria-label={`Voir ${project.title}`}
+                    >
+                      <ExternalLink size={16} className="text-white" />
                     </button>
 
-                  {/* Content Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <span className="text-white text-sm font-medium">{project.description}</span>
-                    <h3 className="text-white text-lg font-semibold mt-1 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                  </div>
-                </div>
+                    {/* CONTENU : titre toujours lisible + description au survol */}
+                    <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                      {/* Titre : chip clair (toujours visible, mobile inclus) */}
+                      <div className="inline-flex max-w-full items-center gap-2
+                                      rounded-xl bg-white/85 backdrop-blur-md
+                                      px-3 py-2 text-sm text-dark font-semibold
+                                      shadow-[0_6px_16px_-8px_rgba(0,0,0,0.35)]
+                                      whitespace-normal">
+                        <span className="truncate sm:whitespace-normal">{project.title}</span>
+                      </div>
 
-                {/* Glassmorphic Border Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                      {/* Description : uniquement au hover sur md+ */}
+                      <div className="hidden md:block mt-3 translate-y-3 opacity-0
+                                      group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="rounded-xl bg-white/80 backdrop-blur-md px-3 py-2 text-[13px] leading-relaxed text-dark/90
+                                        shadow-[0_6px_16px_-8px_rgba(0,0,0,0.25)]">
+                          {/* 2–3 lignes max sans plugin line-clamp */}
+                          <div className="max-h-32 overflow-hidden">
+                            {project.description}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Liseré glass léger au hover */}
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl
+                                  bg-gradient-to-r from-primary/0 via-primary/15 to-primary/0
+                                  opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
               </div>
-            </div>
           ))}
         </div>
 
