@@ -8,9 +8,9 @@ export default {
         'primary-light': '#771111',
         'primary-dark': '#330000',
         dark: '#1a1a1a',
-        'dark-light': '#2a2a2a',
+        'dark-light': '#4A4A4A',
         'soft-white': '#f8f8f8',
-        'soft-black': '#0f0f0f',
+        'soft-black': '#4A4A4A',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
