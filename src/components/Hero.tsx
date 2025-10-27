@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Play } from 'lucide-react';
@@ -8,6 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -61,11 +63,30 @@ const Hero: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    
+    // Si on est déjà sur la page d'accueil
+    if (location.pathname === '/') {
+      const element = document.getElementById('contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      // Sinon, naviguer vers la page d'accueil puis scroller
+      navigate('/#contact');
+    }
+  };
+
+  const handleWorksClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    navigate('/works');
+  };
+
   return (
     <section
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-center bg-cover"
-      // ✅ Image en background directement sur la section
       style={{
         backgroundImage: "url('/Sama.jpg')",
         backgroundRepeat: 'no-repeat',
@@ -97,25 +118,27 @@ const Hero: React.FC = () => {
         </p>
 
         <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            to="#contact"
+          <a
+            href="/#contact"
+            onClick={handleContactClick}
             className="group relative px-8 py-4 bg-primary hover:bg-primary-light backdrop-blur-sm rounded-2xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/25"
           >
             <span className="flex items-center gap-2">
               Discuter d&apos;un projet
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </span>
-          </Link>
+          </a>
 
-          <Link
-            to="/works"
+          <a
+            href="/works"
+            onClick={handleWorksClick}
             className="group px-8 py-4 bg-soft-white/10 hover:bg-soft-white/20 backdrop-blur-md border border-soft-white/20 rounded-2xl text-soft-white font-semibold transition-all duration-300 hover:scale-105"
           >
             <span className="flex items-center gap-2">
               <Play size={18} />
               Voir mes réalisations
             </span>
-          </Link>
+          </a>
         </div>
 
         {/* Indicateur de scroll */}

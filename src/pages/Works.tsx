@@ -1,70 +1,58 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
-import { ArrowLeft, Play, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import Navigation from '../components/Navigation';
 
 const Works: React.FC = () => {
   const projects = [
     {
       id: 1,
-      title: 'Campaign Luxe Fashion',
-      category: 'Vidéo Publicitaire',
-      year: '2024',
-      description: 'Création complète d\'une campagne vidéo pour une marque de mode luxe, du concept à la post-production.',
-      image: 'https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=800',
-      video: 'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['Montage', 'Colorimétrie', 'Motion Design']
+      title: 'Unboxing & Vidéos Produits',
+      description: "Mettons en valeur vos produits avec des vidéos d'unboxing accrocheuses et des présentations détaillées qui suscitent la curiosité et renforcent la confiance de vos clients.",
+      image: 'https://img.freepik.com/photos-premium/jeune-influenceur-blogue-vetements-tout-restant-assis-maison_1048944-7659570.jpg',
+      hasVideo: true,
+      externalLink: 'https://www.instagram.com/reel/DImHTxio-qP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' 
     },
     {
       id: 2,
-      title: 'Série Documentaire',
-      category: 'Contenu Digital',
-      year: '2024',
-      description: 'Production d\'une série documentaire en 5 épisodes sur l\'entrepreneuriat féminin.',
-      image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800',
-      video: 'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['Interview', 'Narration', 'Storytelling']
+      title: 'Giveaway et Concours',
+      description: "Faites plaisir à votre communauté tout en stimulant son engagement ! Grâce à des vidéos dynamiques, je conçois des contenus qui donnent envie de participer, partager et suivre l'évolution de votre marque.",
+      image: "https://img.freepik.com/photos-gratuite/heureuse-femme-tenant-cadeaux-coup-moyen_23-2149386902.jpg?t=st=1761562556~exp=1761566156~hmac=07a185c0c09b2c634876047f736b309943f652441d56ad76fea9cb20efc2170a",
+      hasVideo: true,
+      externalLink: 'https://www.instagram.com/reel/DOmA8jHCL0n/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
     },
     {
       id: 3,
-      title: 'Brand Content Beauty',
-      category: 'Photographie',
-      year: '2023',
-      description: 'Shooting photo et création de contenu pour le lancement d\'une nouvelle gamme cosmétique.',
-      image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
-      video: null,
-      tags: ['Studio', 'Retouche', 'Art Direction']
+      title: 'Récapitulatif événementiel',
+      description: "Revivez les moments forts de vos événements à travers des vidéos qui retranscrivent l'énergie sur place. Mariages, lancements, conférences, brunchs, expositions… faites-moi confiance !",
+      image: 'https://img.freepik.com/photos-gratuite/photographe-taille-moyenne-couple-marie_23-2150264546.jpg?t=st=1761562844~exp=1761566444~hmac=c5a5a36ce81fe0e8096ece21b3b7c24867024850ae631992394b9c5f8e65b5ec',
+      hasVideo: true,
+      externalLink: 'https://www.instagram.com/reel/DLYVMkRo10W/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
     },
     {
       id: 4,
-      title: 'Clip Musical Indé',
-      category: 'Clip Musical',
-      year: '2023',
-      description: 'Réalisation et montage d\'un clip musical pour un artiste émergent, style cinématographique.',
-      image: 'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=800',
-      video: 'https://images.pexels.com/photos/442540/pexels-photo-442540.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['Cinéma', 'Colorimétrie', 'Narration']
+      title: 'Mode & portraits créatifs',
+      description: 'Ma spécialité : des visuels avec une direction artistique affirmée pour mettre en valeur la mode. Chacune de mes créations mettent en avant la beauté et le message de la marque.',
+      image: 'https://img.freepik.com/photos-gratuite/portrait-femme-souriante-qui-pose-studio_23-2150368003.jpg?t=st=1761562652~exp=1761566252~hmac=f0220b9eed4dc26409a2937e14640fd91932b23a493c973419b4af37392c930d',
+      hasVideo: true,
+      externalLink: 'https://www.instagram.com/reel/DNv7s5ZUBEn/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
     },
     {
       id: 5,
-      title: 'Corporate Tech',
-      category: 'Vidéo Corporate',
-      year: '2023',
-      description: 'Présentation corporate pour une startup tech, alliant modernité et professionnalisme.',
-      image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800',
-      video: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['Corporate', 'Animation', 'Présentation']
-    },
+      title: 'Interviews & Podcast',
+      description: "Et si je vous laissais la parole ? A travers des interviews qui révèlent votre personnalité et l'âme de votre marque, je vous mets à l'aise pour partager votre histoire.",
+      image: 'https://img.freepik.com/photos-gratuite/point-vue-homme-femme-enregistrant-discussion-direct-camera-faisant-ensemble-episode-podcast-influenceur-style-vie-parlant-invitee-studio-neons-equipement-rpg_482257-48353.jpg?t=st=1761562701~exp=1761566301~hmac=f2bd0935bae1b72decd848298ecae48372e4daebec672b83e0113137c117784d',
+      hasVideo: true,
+      externalLink: 'https://www.instagram.com/reel/DPuXyYbDEoR/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
+    },  
     {
       id: 6,
-      title: 'Fashion Editorial',
-      category: 'Photographie',
-      year: '2022',
-      description: 'Série photographique éditorial pour un magazine de mode, jeu sur les contrastes et textures.',
-      image: 'https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800',
-      video: null,
-      tags: ['Editorial', 'Mode', 'Créatif']
+      title: 'Voyage & Découverte',
+      description: "Des vidéos immersives qui racontent des destinations, des cultures ou des expériences. Adaptées aux agences de voyage, hôtels, restaurants ou initiatives touristiques, qui offrent de quoi s'évader.",
+      image: 'https://img.freepik.com/photos-premium/gens-debout-cloture-bois-regardant-camera-generative-ai_1034463-72100.jpg',
+      hasVideo: true,
+      externalLink: 'https://www.instagram.com/reel/DBrSNI8NjAR/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
     }
   ];
 
@@ -89,6 +77,11 @@ const Works: React.FC = () => {
     );
   }, []);
 
+  const handleExternalLinkClick = (e: React.MouseEvent, link: string) => {
+    e.stopPropagation(); // Empêche la propagation au parent
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="min-h-screen bg-soft-black">
       <Navigation />
@@ -109,7 +102,7 @@ const Works: React.FC = () => {
               Mes <span className="text-primary">Réalisations</span>
             </h1>
             <p className="text-xl text-soft-white/70 max-w-2xl">
-              Une sélection de projets qui racontent des histoires uniques à travers l'image et la vidéo.
+              À travers mes réalisations, je mets en lumière des marques, entrepreneurs et créateurs qui souhaitent faire rayonner leur univers. Je travaille sur des projets variés : mode, beauté, gastronomie, culture, artisanat, bien-être, et plus encore — toujours avec une approche humaine, esthétique et stratégique.
             </p>
           </div>
         </div>
@@ -134,26 +127,18 @@ const Works: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-soft-black/80 to-transparent" />
                     
-                    {/* Video Play Button */}
-                    {project.video && (
-                      <div className="absolute top-4 right-4 w-10 h-10 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Play size={16} className="text-white ml-0.5" />
-                      </div>
-                    )}
-
-                    {/* External Link */}
-                    <div className="absolute top-4 left-4 w-10 h-10 bg-dark-light/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    {/* External Link Button */}
+                    <button
+                      onClick={(e) => handleExternalLinkClick(e, project.externalLink)}
+                      className="absolute top-4 left-4 w-10 h-10 bg-dark-light/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:scale-110 duration-300"
+                      aria-label={`Voir ${project.title}`}
+                    >
                       <ExternalLink size={16} className="text-soft-white" />
-                    </div>
+                    </button>
                   </div>
 
                   {/* Content */}
                   <div className="p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-primary text-sm font-medium">{project.category}</span>
-                      <span className="text-soft-white/50 text-sm">{project.year}</span>
-                    </div>
-                    
                     <h3 className="text-xl font-semibold text-soft-white mb-3 group-hover:text-primary transition-colors">
                       {project.title}
                     </h3>
@@ -162,17 +147,16 @@ const Works: React.FC = () => {
                       {project.description}
                     </p>
 
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-dark-light/70 backdrop-blur-sm border border-soft-white/10 rounded-full text-xs text-soft-white/80"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    {/* View Project Link */}
+                    <a
+                      href={project.externalLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:gap-3 transition-all"
+                    >
+                      Voir le projet
+                      <ExternalLink size={14} />
+                    </a>
                   </div>
                 </div>
               </div>

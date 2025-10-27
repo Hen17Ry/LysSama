@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { Menu, X, Camera } from 'lucide-react';
 
@@ -7,6 +7,7 @@ const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +32,27 @@ const Navigation: React.FC = () => {
     );
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Si c'est un lien avec ancre
+    if (href.includes('#')) {
+      e.preventDefault();
+      const [path, hash] = href.split('#');
+      
+      // Si on est déjà sur la page d'accueil
+      if (location.pathname === '/' || path === '/') {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        // Sinon, naviguer vers la page d'accueil puis scroller
+        navigate('/' + (hash ? `#${hash}` : ''));
+      }
+      
+      setIsOpen(false);
+    }
+  };
+
   const navItems = [
     { name: 'Accueil', href: '/' },
     { name: 'Réalisations', href: '/works' },
@@ -38,6 +60,15 @@ const Navigation: React.FC = () => {
     { name: 'À propos', href: '/#about' },
     { name: 'Contact', href: '/#contact' },
   ];
+
+  const isActiveLink = (href: string) => {
+    if (href === '/') return location.pathname === '/' && !location.hash;
+    if (href.includes('#')) {
+      const hash = href.split('#')[1];
+      return location.pathname === '/' && location.hash === `#${hash}`;
+    }
+    return location.pathname === href;
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -61,13 +92,14 @@ const Navigation: React.FC = () => {
               <Link
                 key={item.name}
                 to={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className={`nav-item relative text-sm font-medium transition-colors hover:text-primary ${
-                  location.pathname === item.href ? 'text-primary' : 'text-soft-white/80'
+                  isActiveLink(item.href) ? 'text-primary' : 'text-soft-white/80'
                 }`}
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
                 {item.name}
-                {location.pathname === item.href && (
+                {isActiveLink(item.href) && (
                   <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full" />
                 )}
               </Link>
@@ -91,10 +123,10 @@ const Navigation: React.FC = () => {
                 <Link
                   key={item.name}
                   to={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className={`block text-lg font-medium transition-colors hover:text-primary ${
-                    location.pathname === item.href ? 'text-primary' : 'text-soft-white/80'
+                    isActiveLink(item.href) ? 'text-primary' : 'text-soft-white/80'
                   }`}
-                  onClick={() => setIsOpen(false)}
                 >
                   {item.name}
                 </Link>

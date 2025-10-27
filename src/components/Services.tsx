@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Video, Camera, CreditCard as Edit3, Palette, Monitor, Sparkles } from 'lucide-react';
+import { Video, Camera, CreditCard as Edit3, Palette, Users, Sparkles, } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,44 +11,44 @@ const Services: React.FC = () => {
   const services = [
     {
       icon: Video,
-      title: 'Montage Vidéo',
-      description: 'Création et montage de contenus vidéo professionnels, de la publicité aux documentaires.',
-      features: ['Colorimétrie avancée', 'Motion Design', 'Sound Design', 'Effets visuels'],
+      title: 'Création de contenu vidéo',
+      description: 'De la conception à la réalisation, je vous accompagne dans tous vos projets créatifs avec une expertise technique et une vision artistique unique.',
+      features: ['Tournage professionnel', 'Storytelling adapté', 'Optimisation pour chaque plateforme', 'Formats prêts à publier'],
       color: 'from-primary to-primary-light'
     },
     {
       icon: Camera,
-      title: 'Photographie',
-      description: 'Shooting photo créatif pour vos campagnes, portraits et contenus éditoriaux.',
-      features: ['Studio & Extérieur', 'Retouche professionnelle', 'Direction artistique', 'Éclairage créatif'],
+      title: 'Montage vidéo & Post-production',
+      description: 'Transformez vos rushes en contenus professionnels. Je donne vie à vos idées grâce à une post-production soignée et créative.',
+      features: ['Montage de vidéos format short (Instagram, TikTok, YouTube Shorts)', 'Étalonnage colorimétrique', 'Intégration de sous-titres et habillage', 'Animation de textes et transitions', 'Sound design'],
       color: 'from-purple-600 to-purple-400'
     },
     {
       icon: Edit3,
-      title: 'Création de Contenu',
-      description: 'Développement de contenus digitaux adaptés à vos plateformes et votre audience.',
-      features: ['Stratégie de contenu', 'Réseaux sociaux', 'Storytelling', 'Brand Content'],
+      title: 'Consulting créatif',
+      description: 'Accélérez votre croissance avec une stratégie de contenu sur-mesure.Vous avez besoin d une vision extérieure pour propulser votre présence digitale ? Pour les entrepreneurs, marques et créateur.ice.s qui veulent passer au niveau supérieur.',
+      features: ['Audit de votre présence digitale actuelle', 'Stratégie de contenu adaptée à vos objectifs', 'Conseils sur les tendances sur lesquelles surfer', 'Optimisation de votre identité en ligne'],
       color: 'from-blue-600 to-blue-400'
     },
     {
       icon: Palette,
       title: 'Direction Artistique',
-      description: 'Conception et supervision créative de vos projets visuels de A à Z.',
-      features: ['Concept créatif', 'Moodboard', 'Art direction', 'Supervision'],
+      description: 'Une vision créative qui sublime votre identité visuelle. Je conçois et orchestre l univers visuel complet de vos projets créatifs',
+      features: ['Conception d univers visuels et moodboards', 'Direction de shootings photo et vidéo', 'Coordination avec stylistes, maquilleurs et photographes', 'Création d identité visuelle pour campagnes'],
       color: 'from-green-600 to-green-400'
     },
     {
-      icon: Monitor,
-      title: 'Post-Production',
-      description: 'Finalisation technique et créative de vos contenus avec les derniers outils.',
-      features: ['Étalonnage', 'Compositing', 'Animation 2D/3D', 'Optimisation'],
+      icon: Users,
+      title: 'Partenariats & Collaborations de marque ',
+      description: 'Je collabore avec des marques qui partagent de belles valeurs pour créer du contenu authentique. Forte d une communauté engagée dans l univers mode, lifestyle, beauté et bien-être, je donne vie à vos produits à travers des contenus qui stimulent les conversions.',
+      features: ['Création de contenu UGC photo et vidéo', 'Intégration naturelle de vos produits dans mon contenu', 'Stories, posts et Reels sponsorisés sur Instagram et TikTok', 'Exposition auprès d,une audience qualifiée au Bénin et dans la diaspora', 'Respect strict de vos guidelines et de mes valeurs'],
       color: 'from-orange-600 to-orange-400'
     },
     {
       icon: Sparkles,
-      title: 'Consulting Créatif',
-      description: 'Accompagnement stratégique pour optimiser votre communication visuelle.',
-      features: ['Audit créatif', 'Stratégie visuelle', 'Formation équipe', 'Suivi projet'],
+      title: 'Rédaction de Contenu & Copywriting',
+      description: "Avec de l'expérience dans la rédaction web SEO, je rédige des textes qui donnent de la personnalité à votre marque. Chaque mot est choisi pour connecter avec votre audience et atteindre vos objectifs.",
+      features: ['Articles de blog optimisés SEO', 'Captions créatives pour Instagram, TikTok et Facebook', 'Copywriting pour sites web et landing pages', 'Contenus adaptés à votre ton et vos valeurs'],
       color: 'from-pink-600 to-pink-400'
     }
   ];

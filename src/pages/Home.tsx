@@ -29,9 +29,26 @@ const Home: React.FC = () => {
       }
     );
 
+    // Gestion du scroll vers les sections avec ancre
+    const handleHashScroll = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
+    };
+
+    handleHashScroll();
+    window.addEventListener('hashchange', handleHashScroll);
+
     // Nettoyage des ScrollTriggers
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      window.removeEventListener('hashchange', handleHashScroll);
     };
   }, []);
 
@@ -40,11 +57,17 @@ const Home: React.FC = () => {
       <Navigation />
       <Hero />
       <Realisations />
-      <Services />
+      <section id="services">
+        <Services />
+      </section>
       <Brands />
-      <About />
+      <section id="about">
+        <About />
+      </section>
       <Process />
-      <Contact />
+      <section id="contact">
+        <Contact />
+      </section>
     </div>
   );
 };

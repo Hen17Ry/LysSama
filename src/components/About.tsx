@@ -156,22 +156,18 @@ const About: React.FC = () => {
             
             <div className="space-y-6 text-lg text-soft-white/80 leading-relaxed">
               <p>
-                Bonjour ! Je suis une créatrice de contenu passionnée, spécialisée dans la vidéographie 
-                et la photographie. Avec plus de 5 années d'expérience, j'ai eu l'opportunité de 
-                travailler avec des marques prestigieuses et des créateurs talentueux.
+                J'ai toujours eu cette envie de créer du beau. Petite, je faisais déjà tout mon possible pour créer. Plus tard, j'ai appris à monter des vidéos et je suis complètement tombée en amour face à l'univers du storytelling visuel. 
+                Aujourd'hui, je suis Lys Sama, créatrice de contenu visuel basée à Cotonou. Je me spécialise dans la narration visuelle et adore travailler sur des univers de marques qui ont du sens, particulièrement dans les secteurs de la mode, du lifestyle, de la beauté et du bien-être.
               </p>
               
               <p>
-                Mon approche combine <span className="text-primary font-semibold">technique maîtrisée</span> et 
-                <span className="text-primary font-semibold"> vision artistique</span> pour créer des contenus 
-                qui racontent des histoires authentiques et captivantes. Chaque projet est une nouvelle 
-                opportunité d'explorer les limites de la créativité.
+                Mon travail mêle émotion et précision, esthétique et structure, intuition et stratégie. Ingénieure avant d'être créatrice, j'ai développé une approche où chaque image et chaque mot compte.
+                Derrière chaque projet, il y a l'envie de mettre en lumière une histoire, qu'il s'agisse d'un produit, d'une personne ou d'une idée. Je crois qu'on peut tout dire, tant que c'est bien raconté.
+                Je travaille avec des marques locales et internationales qui partagent de belles valeurs et veulent se démarquer sans se dénaturer.
               </p>
               
               <p>
-                Je crois profondément que l'image a le pouvoir de transmettre des émotions uniques et 
-                de créer des connexions durables avec l'audience. C'est cette philosophie qui guide 
-                chacune de mes créations.
+                Vous avez un projet qui mérite d'être raconté autrement ? Vous cherchez une créatrice de contenu qui comprend autant les enjeux techniques que l'importance de l'émotion ? Je suis prête à mettre mon  expertise au service de votre vision.
               </p>
             </div>
 
