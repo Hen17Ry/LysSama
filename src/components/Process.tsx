@@ -231,7 +231,7 @@ const Process: React.FC = () => {
         <div className="text-center mt-20">
           <div className="inline-flex flex-col items-center gap-4 p-8 bg-gradient-to-br from-primary/10 to-transparent backdrop-blur-md border border-primary/20 rounded-3xl">
             <h3 className="text-2xl font-bold text-soft-white">
-              Prête à démarrer votre projet ?
+              Prêt.e à démarrer votre projet ?
             </h3>
             <p className="text-soft-white/70 max-w-lg">
               Chaque grand projet commence par une simple conversation. 
