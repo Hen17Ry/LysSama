@@ -4,13 +4,10 @@ Allow: /
 Sitemap: https://lyssama.netlify.app/sitemap.xml
 ```
 
-## 3. Configurer Netlify pour les SPAs
+C'est tout ! Votre `robots.txt` est déjà correct. 
 
-Créez un fichier `public/_redirects` pour gérer le routing React :
+Le vrai problème se situe dans votre fichier `_redirects`, pas dans le `robots.txt`. Assurez-vous que votre fichier `public/_redirects` ressemble à ceci :
 ```
-# Redirection pour React Router
-/*    /index.html   200
-
-# Le sitemap doit être accessible directement
 /sitemap.xml   /sitemap.xml   200
 /robots.txt    /robots.txt    200
+/*    /index.html   200
