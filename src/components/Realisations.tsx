@@ -195,7 +195,7 @@ const Realisations: React.FC = () => {
         <div className="text-center">
           <Link
             to="/works"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary/10 hover:bg-primary/20 backdrop-blur-md border border-primary/30 rounded-2xl text-primary font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary/20 to-primary-light/20 backdrop-blur-md hover:bg-primary/20  border border-primary/30 rounded-2xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
           >
             Voir tous mes projets
             <ExternalLink size={18} />
