@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lyssama.netlify.app/sitemap.xml
+```
+
+## 3. Configurer Netlify pour les SPAs
+
+Créez un fichier `public/_redirects` pour gérer le routing React :
+```
+# Redirection pour React Router
+/*    /index.html   200
+
+# Le sitemap doit être accessible directement
+/sitemap.xml   /sitemap.xml   200
+/robots.txt    /robots.txt    200
