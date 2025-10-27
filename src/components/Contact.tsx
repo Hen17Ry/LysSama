@@ -455,7 +455,7 @@ const Contact: React.FC = () => {
             <span className="text-xl font-bold text-soft-white">Portfolio</span>
           </div>
           <p className="text-soft-white/50 text-sm">
-            © 2024 Portfolio Créatrice. Tous droits réservés.
+            © 2025 Portfolio Créatrice. Tous droits réservés.
           </p>
         </div>
       </div>
