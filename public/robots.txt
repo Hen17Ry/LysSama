@@ -1,13 +1,13 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lyssama.netlify.app/sitemap.xml
+Sitemap: https://lyssama.netlify.app/mysite.xml
 ```
 
 C'est tout ! Votre `robots.txt` est déjà correct. 
 
 Le vrai problème se situe dans votre fichier `_redirects`, pas dans le `robots.txt`. Assurez-vous que votre fichier `public/_redirects` ressemble à ceci :
 ```
-/sitemap.xml   /sitemap.xml   200
+/mysite.xml   /mysite.xml   200
 /robots.txt    /robots.txt    200
 /*    /index.html   200
