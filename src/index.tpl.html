@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lys Sama — La Galerie intérieure</title>
+<meta name="description" content="Lys Sama, créatrice de contenu. Une exposition immersive en sept salles, entre mode, culture et cinématographie.">
+<meta name="theme-color" content="#F3F0EC">
+<!-- Site en préparation (textes et contacts provisoires) : retirer la ligne suivante pour autoriser l’indexation -->
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400..700&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=Hanken+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"}}</script>
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body class="is-loading">
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Chargement -->
+<div class="loader" aria-hidden="true">
+  <div class="ld-mark"><span class="ld-w"><b>Lys</b></span><i class="ld-win"></i><span class="ld-w"><b>Sama</b></span></div>
+  <p class="ld-sub"><span>La galerie intérieure</span></p>
+  <div class="ld-meter"><span class="ld-label">Accrochage des œuvres</span><span class="ld-num"><b>0</b> %</span></div>
+</div>
+
+<!-- Barre -->
+<header class="bar">
+  <a class="brand" href="#" data-home aria-label="Lys Sama, retour à l’accueil"><b>Lys Sama</b><span>Galerie intérieure</span></a>
+  <nav class="bar-nav" aria-label="Navigation">
+    <button class="bar-btn" data-plan aria-expanded="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 18V8h6V2h10v6h-6v10z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Plan</span></button>
+    <button class="bar-btn" data-sound aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span>Son</span></button>
+    <button class="bar-cta" data-contact>Contact</button>
+  </nav>
+</header>
+
+<!-- Accueil -->
+<section class="hero" aria-label="Accueil">
+  <h1 class="sr-only">Lys Sama — créatrice de contenu, entre mode, culture et cinématographie</h1>
+  <div class="hero-pitch">
+    <p class="hp-role">Créatrice de contenu</p>
+    <p class="hp-text">Je raconte la mode et la culture avec le regard du cinéma.</p>
+  </div>
+  <button class="hero-invite" data-enter><span>Entrez dans ma tête</span><i aria-hidden="true"></i></button>
+  <div class="hero-bill">
+    <p>Mode <i>·</i> Culture <i>·</i> Cinématographie</p>
+    <p class="hb-2">Exposition permanente — 7 salles, 21 œuvres — Entrée libre</p>
+  </div>
+</section>
+
+<!-- Paupières : bandes cinéma + clignement -->
+<div class="lid lid-t" aria-hidden="true"></div>
+<div class="lid lid-b" aria-hidden="true"></div>
+
+<!-- Carton de salle -->
+<div class="card" aria-hidden="true">
+  <span class="card-k">Salle I</span>
+  <div class="card-t"><span>L’Essence</span></div>
+  <span class="card-s">Ikigai, vision, cap</span>
+</div>
+
+<!-- Visite -->
+<div class="hud">
+  <div class="hud-room" aria-live="polite"><b class="hr-num">I</b><span class="hr-of">/ VII</span><span class="hr-title">L’Essence</span></div>
+  <div class="hud-hint"><span>Faites défiler pour avancer</span></div>
+  <button class="hud-cap" tabindex="-1"><span class="hc-n">N° 01</span><span class="hc-t">Ikigai</span><span class="hc-go">Voir l’œuvre</span></button>
+  <div class="hud-prog" aria-hidden="true"></div>
+</div>
+
+<!-- Fiche œuvre -->
+<aside class="panel" aria-hidden="true" aria-label="Œuvre">
+  <button class="p-close" aria-label="Revenir à la visite"><span>Retour à la visite</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
+  <div class="p-scroll" data-lenis-prevent><div class="p-body"></div></div>
+  <div class="p-nav">
+    <button class="p-prev" data-nav="-1" aria-label="Œuvre précédente"><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M24 6H2M7 1L2 6l5 5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></button>
+    <span class="p-count"><b>01</b> / 21</span>
+    <button class="p-next" data-nav="1"><span class="pn-l">Œuvre suivante</span><span class="pn-t">La Vision</span><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M0 6h22M17 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></button>
+  </div>
+</aside>
+
+<!-- Plan de l’exposition -->
+<div class="plan" aria-hidden="true" role="dialog" aria-label="Plan de l’exposition" data-lenis-prevent>
+  <div class="plan-in">
+    <div class="plan-head"><span class="plan-k">Plan de l’exposition</span><button class="plan-close" data-plan-close>Fermer</button></div>
+    <div class="plan-map"></div>
+    <ol class="plan-list"></ol>
+    <div class="plan-foot"><button class="plan-home" data-home>Revenir à l’accueil</button><span class="plan-mail"></span></div>
+  </div>
+</div>
+
+<div class="cursor" aria-hidden="true"><span>Voir</span></div>
+<div id="track" aria-hidden="true"></div>
+<main class="alt sr-only" id="alt"></main>
+<noscript><p style="padding:40px;font-family:Georgia,serif">Lys Sama — créatrice de contenu. Cette exposition immersive nécessite JavaScript.</p></noscript>
+
+<script type="module">
+/*__JS__*/
+</script>
+</body>
+</html>
