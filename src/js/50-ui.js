@@ -49,11 +49,11 @@ const Snd = {
    FICHE ŒUVRE — la caméra se place face au tableau, on passe de l’un à l’autre
    ===================================================================== */
 const nearAngle = (a, ref) => a + Math.round((ref - a) / (Math.PI * 2)) * Math.PI * 2;
-function focusLayout() { const p = $('.panel'), r = p.getBoundingClientRect(); return { side: getComputedStyle(p).getPropertyValue('--layout').trim() !== 'sheet', pw: r.width, ph: r.height }; }
+function focusLayout() { const p = $('.panel'); return { side: getComputedStyle(p).getPropertyValue('--layout').trim() !== 'sheet', pw: p.offsetWidth, ph: p.offsetHeight, top: p.offsetTop }; }
 function focusPose(it, o = {}) {
   const L = focusLayout(), tan = Math.tan(rad(V.fov / 2)); let wF, hF, cx, cy;
-  if (L.side) { const av = V.w - L.pw; wF = av / V.w * .76; hF = .66; cx = av / 2 / V.w; cy = .5; }
-  else { const top = $('.bar').offsetHeight * .7, av = V.h - L.ph - top; hF = av / V.h * .84; wF = .86; cx = .5; cy = (top + av / 2) / V.h; }
+  if (L.side) { const av = V.w - L.pw, vh = Math.min(V.h, L.ph || V.h); wF = av / V.w * .76; hF = .66 * vh / V.h; cx = av / 2 / V.w; cy = vh / 2 / V.h; }
+  else { const top = $('.bar').offsetHeight * .7, av = Math.min(V.h - L.ph, L.top || V.h) - top; hF = av / V.h * .84; wF = .86; cx = .5; cy = (top + av / 2) / V.h; }
   const d = clamp(Math.max(it.H / (2 * tan * hF), it.W / (2 * tan * V.asp * wF)), 1.4, it.maxD);
   o.x = it.center.x + it.normal.x * d; o.y = it.center.y; o.z = it.center.z + it.normal.z * d;
   o.yaw = Math.atan2(it.normal.x, it.normal.z); o.pitch = 0; o.fov = V.fov; o.ox = .5 - cx; o.oy = .5 - cy;

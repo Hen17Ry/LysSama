@@ -10,9 +10,9 @@ const Hero = {
 
 const HERO_FRAG = /* glsl */`
 uniform sampler2D tPhoto, tFace, tMatte, tText, tScene;
-uniform vec2 uRes, uView, uPhoto, uAnchor, uC, uC0, uMouse;
+uniform vec2 uRes, uView, uPhoto, uAnchor, uC, uC0, uMouse, uScr;
 uniform vec4 uFace, uWin;
-uniform float uDpr, uSZ, uTextZ, uLodP, uLodF, uTap, uPortalR, uPortalA, uText, uWinOn, uScrim, uDim, uHas;
+uniform float uDpr, uSZ, uTextZ, uLodP, uLodF, uTap, uPortalR, uPortalA, uText, uWinOn, uScrim, uFadeB, uDim, uHas;
 uniform vec3 uPaper, uTint;
 
 vec3 photoAt(vec2 pp) {
@@ -33,6 +33,7 @@ void main() {
     for (int i = 0; i < 8; i++) { float a = float(i) * 0.7853982 + 0.4; acc += photoAt(pp + vec2(cos(a), sin(a)) * uTap); }
     col = acc / 9.0;
   }
+  col = mix(col, uPaper, uFadeB * smoothstep(0.9, 0.99, pp.y / uPhoto.y));   // le bas de la photo se fond dans le papier
   // détourage du sujet : le nom passe derrière elle
   vec2 muv = pp / uPhoto;
   float matte = texture2D(tMatte, vec2(clamp(muv.x, 0.0, 1.0), 1.0 - clamp(muv.y, 0.0, 1.0))).r;
@@ -44,7 +45,7 @@ void main() {
   if (tuv.x > 0.0 && tuv.x < 1.0 && tuv.y > 0.0 && tuv.y < 1.0) ta = texture2D(tText, vec2(tuv.x, 1.0 - tuv.y)).r * rev;
   col = mix(col * mix(vec3(1.0), uTint, ta), col, matte);
   // fondu bas (portrait) + assombrissement pendant la plongée
-  col = mix(col, uPaper, uScrim * smoothstep(0.64, 0.86, sp.y / uView.y));
+  col = mix(col, uPaper, uScrim * smoothstep(uScr.x, uScr.y, sp.y / uView.y));
   col *= 1.0 - uDim * smoothstep(0.2, 1.0, length((sp - uC) / uView.y));
   // la pupille s’ouvre sur la galerie
   if (uPortalA > 0.001) {
@@ -85,7 +86,7 @@ Hero.init = function () {
       uAnchor: { value: new THREE.Vector2() }, uC: { value: new THREE.Vector2() }, uC0: { value: new THREE.Vector2() }, uMouse: { value: new THREE.Vector2() },
       uFace: { value: new THREE.Vector4(PHOTO.face.x0, PHOTO.face.y0, PHOTO.face.x1, PHOTO.face.y1) }, uWin: { value: new THREE.Vector4() },
       uDpr: { value: 1 }, uSZ: { value: 1 }, uTextZ: { value: 1 }, uLodP: { value: 0 }, uLodF: { value: 0 }, uTap: { value: 0 },
-      uPortalR: { value: 0 }, uPortalA: { value: 0 }, uText: { value: 0 }, uWinOn: { value: 1 }, uScrim: { value: 0 }, uDim: { value: 0 }, uHas: { value: IMG.hero ? 1 : 0 },
+      uPortalR: { value: 0 }, uPortalA: { value: 0 }, uText: { value: 0 }, uWinOn: { value: 1 }, uScrim: { value: 0 }, uScr: { value: new THREE.Vector2(.64, .86) }, uFadeB: { value: 0 }, uDim: { value: 0 }, uHas: { value: IMG.hero ? 1 : 0 },
       uPaper: { value: new THREE.Color(P.paper) }, uTint: { value: new THREE.Color(P.wine) },
     },
     vertexShader: 'void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }',
@@ -98,13 +99,41 @@ Hero.init = function () {
   Hero.ready = true;
 };
 
-/* cadrage de la photo et du nom selon l’écran */
+/* cadrage de la photo et du nom selon l’écran : la personne est centrée */
 Hero.layout = function () {
-  const L = {}, land = V.asp >= 1.15, hd = PHOTO.head;
-  if (land) { L.scale = V.h / 1560; L.ox = V.w * .47 - hd.cx * L.scale; }
-  else { L.scale = V.h / 1900; L.ox = V.w / 2 - 990 * L.scale; }
-  L.oy = V.h * 1.015 - PHOTO.h * L.scale;
+  const L = {}, land = V.land, hd = PHOTO.head, heroEl = $('.hero'), pitch = $('.hero-pitch'), inv = $('.hero-invite');
+  heroEl.classList.remove('is-short', 'is-xshort');
   L.land = land;
+  L.scale = V.h / (land ? 1560 : 1800);
+  L.ox = V.w / 2 - (land ? hd.cx : 1105) * L.scale;
+  L.oy = V.h * 1.015 - PHOTO.h * L.scale;
+  /* le nom : de part et d’autre de la tête (paysage) ou empilé au-dessus (portrait) */
+  const c = Hero.textCv.getContext('2d'), font = px => `600 ${px}px Fraunces, Georgia, serif`;
+  c.font = font(100); const wA = c.measureText('LYS').width, wB = c.measureText('SAMA').width;
+  const bar = ($('.bar') || {}).offsetHeight || 64, M = L.mast = {};
+  if (land) {
+    const headL = L.ox + hd.l * L.scale, headR = L.ox + hd.r * L.scale, m = V.w * .03, ov = V.w * .012, headTop = L.oy + hd.top * L.scale;
+    M.xa = headL - V.w * .004; M.xb = headR - ov;
+    M.fs = Math.min(V.h * .27, (V.w - m - M.xb) * 100 / wB, (M.xa - m) * 100 / wA);
+    const cap = M.fs * .7; M.ya = M.yb = Math.max(headTop + cap * .66, bar + 6 + cap);
+  } else {
+    /* portrait : nom empilé, tête juste dessous. Tout est calé sur la hauteur réellement visible
+       (les barres du navigateur mobile mangent le bas) : le visage ne passe jamais sous le texte. */
+    const Hv = Math.min(V.h, heroEl.offsetHeight || V.h), low = Hv < 700, base = L.scale;
+    M.fs = Math.min(V.w * .9 * 100 / wB, Hv * (low ? .145 : .16)); const cap = M.fs * .7;
+    M.ya = bar + (low ? 26 : 30) + cap; M.yb = M.ya + M.fs * .84;
+    const nameB = M.yb - cap * .14, headH = PHOTO.chin - hd.top, gap = Hv * .05, fit = t => (t - gap - nameB) / headH;
+    let top = pitch.offsetTop, sc = fit(top);
+    if (sc < base * .82) { heroEl.classList.add('is-short'); top = pitch.offsetTop; sc = fit(top); }
+    if (sc < base * .72) { heroEl.classList.add('is-xshort'); top = inv.offsetTop - Hv * .015; sc = fit(top); }
+    L.scale = clamp(sc, base * .6, Math.max(base, Math.min(base * 1.18, V.w * .54 / (hd.r - hd.l))));
+    L.ox = V.w / 2 - hd.cxP * L.scale;
+    L.oy = nameB - hd.top * L.scale;
+    const slack = top - gap - (L.oy + PHOTO.chin * L.scale);            // écran haut : on répartit le vide
+    if (slack > 0) { const d = slack * .38; M.ya += d; M.yb += d; L.oy += d; }
+    const chin = L.oy + PHOTO.chin * L.scale, s0 = Math.max(chin - 4, top - Hv * .16), s1 = s0 + clamp((top - s0) / .72, V.h * .06, V.h * .26);
+    L.scr = [s0 / V.h, s1 / V.h];
+  }
   L.C0 = { x: L.ox + PHOTO.eye.x * L.scale, y: L.oy + PHOTO.eye.y * L.scale };
   L.Zmax = (.34 * Math.min(V.w, V.h)) / (PHOTO.iris * L.scale);
   L.DIL = (Math.hypot(V.w, V.h) * .54) / (PHOTO.pupil * L.scale * L.Zmax);
@@ -120,23 +149,13 @@ Hero.layout = function () {
 };
 
 Hero.drawMast = function () {
-  const L = Hero.L, td = Math.min(V.dpr, 2), cv = Hero.textCv, hd = PHOTO.head;
+  const L = Hero.L, M = L.mast, td = Math.min(V.dpr, 2), cv = Hero.textCv;
   cv.width = Math.round(V.w * td); cv.height = Math.round(V.h * td);
   const c = cv.getContext('2d'); c.setTransform(td, 0, 0, td, 0, 0);
   c.fillStyle = '#000'; c.fillRect(0, 0, V.w, V.h); c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
-  const font = px => `600 ${px}px Fraunces, Georgia, serif`;
-  c.font = font(100); const wA = c.measureText('LYS').width, wB = c.measureText('SAMA').width;
-  const bar = ($('.bar') || {}).offsetHeight || 64, headTop = L.oy + hd.top * L.scale;
-  if (L.land) {
-    const headL = L.ox + hd.l * L.scale, headR = L.ox + hd.r * L.scale, m = V.w * .03, ov = V.w * .012;
-    const fs = Math.min(V.h * .27, (V.w - m - (headR - ov)) * 100 / wB, ((headL - V.w * .004) - m) * 100 / wA), cap = fs * .7;
-    const y = Math.max(headTop + cap * .66, bar + 6 + cap);
-    c.font = font(fs); c.textAlign = 'right'; c.fillText('LYS', headL - V.w * .004, y); c.textAlign = 'left'; c.fillText('SAMA', headR - ov, y);
-  } else {
-    const fs = Math.min(V.w * .9 * 100 / wB, V.h * .165), cap = fs * .7, bw = wB * fs / 100, x0 = (V.w - bw) / 2;
-    const y2 = Math.max(headTop + cap * .12, bar + 34 + cap + fs * .84), y1 = y2 - fs * .84;
-    c.font = font(fs); c.textAlign = 'left'; c.fillText('LYS', x0, y1); c.fillText('SAMA', x0, y2);
-  }
+  c.font = `600 ${M.fs}px Fraunces, Georgia, serif`;
+  if (L.land) { c.textAlign = 'right'; c.fillText('LYS', M.xa, M.ya); c.textAlign = 'left'; c.fillText('SAMA', M.xb, M.yb); }
+  else { c.textAlign = 'center'; c.fillText('LYS', V.w / 2, M.ya); c.fillText('SAMA', V.w / 2, M.yb); }
   if (Hero.textTex) { Hero.textTex.dispose(); Hero.textTex.needsUpdate = true; }
 };
 
@@ -154,7 +173,7 @@ Hero.update = function () {
   u.uLodP.value = Math.max(0, Math.log2(b * tpp)); u.uLodF.value = Math.max(0, Math.log2(4 * b * tpp));
   u.uTap.value = H.blur * 9 / (L.scale * Z);
   u.uPortalR.value = PHOTO.pupil * L.scale * Zp * lerp(1, L.DIL, H.dil); u.uPortalA.value = H.pa;
-  u.uText.value = H.text; u.uDim.value = H.dim; u.uScrim.value = L.land ? 0 : H.scrim * .97;
+  u.uText.value = H.text; u.uDim.value = H.dim; u.uScrim.value = L.land ? 0 : H.scrim * .97; u.uFadeB.value = L.land ? 0 : 1; if (L.scr) u.uScr.value.set(L.scr[0], L.scr[1]);
   u.uMouse.value.set(G.mx * H.par, G.my * H.par);
   if (H.win > .001) { const w = L.win, t = H.win; u.uWin.value.set(lerp(0, w.x0, t), lerp(0, w.y0, t), lerp(V.w, w.x1, t), lerp(V.h, w.y1, t)); u.uWinOn.value = 1; } else u.uWinOn.value = 0;
 };

@@ -71,6 +71,7 @@ async function boot() {
   setM(100); await sleep(Math.max(850, 2600 - (performance.now() - t0)));
 
   await reveal();
+  document.body.classList.remove('is-loading'); window.scrollTo(0, 0);
   buildPortalTl();
   if (!REDUCED && window.Lenis) { lenis = new Lenis({ lerp: .085, wheelMultiplier: .8 }); lenis.on('scroll', e => onScroll(e.scroll)); }
   else addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });

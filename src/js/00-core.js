@@ -16,7 +16,7 @@ const PHOTO = {
   mid: { x: 1066, y: 716 },              // entre les deux yeux
   pupil: 4.2, iris: 11.5,
   face: { x0: 880, y0: 520, x1: 1340, y1: 940 },   // zone de img/face.jpg (×4)
-  head: { l: 905, r: 1318, top: 415, cx: 1110 },
+  head: { l: 905, r: 1318, top: 415, cx: 1095, cxP: 1085 }, chin: 955,   // cx : entre l’axe du visage et celui de la chevelure
 };
 
 /* =====================================================================
@@ -122,6 +122,7 @@ const lin = v => Math.pow(v, 2.2);
 const hexLin = hex => { const c = new THREE.Color(hex); return [c.r, c.g, c.b]; };
 const TOUCH = matchMedia('(hover:none),(pointer:coarse)').matches;
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PORT_MQ = matchMedia('(max-aspect-ratio: 23/20)');      // même seuil que la feuille de style
 
 const P = { paper: '#F3F0EC', white: '#FBFAF8', cream: '#EDE4D8', blush: '#E6D2CB', rose: '#C48A86', wine: '#6E0F1E', wine2: '#8A1C2D', deep: '#35070F', ink: '#161214', grey: '#BDB6B1', mute: '#6c6460' };
 const FRAMES = { ink: '#1b1618', wine: '#5E0C18', oak: '#B08C64', white: '#F1EEE9' };
@@ -131,9 +132,10 @@ const V = { w: 1, h: 1, asp: 1, dpr: 1, small: false, fov: 56, bias: 0 };
 function measure() {
   const cv = document.getElementById('gl');
   V.w = Math.max(1, (cv && cv.clientWidth) || innerWidth); V.h = Math.max(1, (cv && cv.clientHeight) || innerHeight); V.asp = V.w / V.h;
+  V.land = !PORT_MQ.matches;
   V.small = Math.min(V.w, V.h) < 600;
   V.dpr = Math.min(window.devicePixelRatio || 1, V.small ? 1.6 : 1.75);
-  V.fov = lerp(74, 56, sstep(.6, 1.4, V.asp));                 // champ vertical
+  V.fov = lerp(78, 56, sstep(.6, 1.4, V.asp));                 // champ vertical
   V.bias = rad(lerp(34, 22, sstep(.6, 1.3, V.asp)));           // regard vers le mur des œuvres
 }
 measure();

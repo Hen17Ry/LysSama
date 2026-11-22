@@ -162,8 +162,8 @@ function frame(time, dt) {
 }
 
 function onResize() {
-  const pw = V.w, ph = V.h; measure();
-  if (G.mode !== 'loading' && Math.abs(V.w - pw) < 1 && Math.abs(V.h - ph) < 1) return;
+  const pw = V.w, ph = V.h, pl = V.land; measure();
+  if (G.mode !== 'loading' && Math.abs(V.w - pw) < 1 && Math.abs(V.h - ph) < 1 && pl === V.land) return;
   if (Gal.renderer) { Gal.renderer.setPixelRatio(V.dpr); Gal.renderer.setSize(V.w, V.h, false); Gal.rt && Gal.rt.setSize(Math.round(V.w * V.dpr), Math.round(V.h * V.dpr)); }
   if (G.mode === 'loading') { Hero.winRect = winRect(); Hero.layout(); return; }
   Hero.layout();

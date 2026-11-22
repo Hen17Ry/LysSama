@@ -82,7 +82,7 @@ body.is-focus .bar-nav,body.is-focus .brand span{opacity:0;pointer-events:none}
 .hero{position:fixed;inset:0;z-index:5;pointer-events:none;visibility:hidden}
 .hero-pitch{position:absolute;left:var(--pad);bottom:clamp(30px,6.5vh,70px);width:min(310px,var(--pitch,25vw))}
 .hero-pitch.is-tight .hp-text{display:none}
-.hp-role{margin-bottom:12px;font:600 15px/1 var(--fc);letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.hp-role{margin-bottom:12px;white-space:nowrap;font:600 15px/1 var(--fc);letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
 .hp-text{font:400 clamp(18px,1.5vw,23px)/1.38 var(--fd);color:var(--ink)}
 .hero-invite{position:absolute;left:50%;bottom:clamp(26px,5.5vh,56px);translate:-50% 0;pointer-events:auto;display:inline-flex;align-items:center;gap:16px;height:54px;padding:0 20px 0 26px;border-radius:999px;background:var(--ink);color:var(--paper);font:500 17px/1 var(--fd);white-space:nowrap;box-shadow:0 16px 40px -16px rgba(22,18,20,.6);transition:background .35s}
 .hero-invite:hover{background:var(--wine)}
@@ -208,7 +208,7 @@ body.is-focus .bar-nav,body.is-focus .brand span{opacity:0;pointer-events:none}
 @media (max-width:1000px){
   .brand span{display:none}
 }
-@media (max-aspect-ratio:1/1),(max-width:820px){
+@media (max-aspect-ratio:23/20){
   .hero-pitch{left:var(--pad);right:var(--pad);width:auto;bottom:124px;text-align:center}
   .hero-pitch.is-tight .hp-text{display:block}
   .hp-role{margin-bottom:8px}
@@ -217,7 +217,9 @@ body.is-focus .bar-nav,body.is-focus .brand span{opacity:0;pointer-events:none}
   .hero-bill p{font-size:14px;letter-spacing:.2em}
   .hero-bill .hb-2{display:none}
   .hero-invite{bottom:40px}
+  .hero.is-short .hp-role,.hero.is-xshort .hero-pitch{display:none}
   .panel{--layout:sheet;top:auto;left:0;width:auto;height:56vh;height:56dvh;border-radius:18px 18px 0 0;box-shadow:0 -30px 80px -40px rgba(0,0,0,.7)}
+  .panel::before{content:"";position:absolute;left:50%;top:8px;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:rgba(22,18,20,.2)}
   .p-close{height:56px;padding:0 18px}
   .p-close span{display:none}
   .p-close svg{width:16px;height:16px}
@@ -244,8 +246,31 @@ body.is-focus .bar-nav,body.is-focus .brand span{opacity:0;pointer-events:none}
   .ld-label{max-width:12ch;line-height:1.3}
   .hud-hint{font-size:13px;letter-spacing:.12em}
 }
+/* portrait court : petits téléphones, barres du navigateur affichées */
+@media (max-aspect-ratio:23/20) and (max-height:700px){
+  .hero-pitch{bottom:104px}
+  .hp-role{margin-bottom:6px;font-size:14px}
+  .hp-text{font-size:17px;line-height:1.32}
+  .hero-invite{bottom:26px;height:50px;font-size:16px}
+  .hero-bill p{font-size:13px}
+}
+/* paysage étroit : petite fenêtre, tablette ou téléphone couché */
+@media (min-aspect-ratio:23/20) and (max-width:900px){
+  .panel{width:min(50vw,460px)}
+  .p-close span{display:none}
+  .p-scroll{padding-left:22px;padding-right:22px}
+  .p-title{font-size:clamp(28px,4.4vw,40px)}
+  .p-facts,.p-form .row{grid-template-columns:1fr}
+  .p-nav{height:66px;padding:0 14px 0 18px;gap:10px}
+  .p-prev{width:44px;height:44px}
+  .pn-t{font-size:16px}
+  .hud-room{max-width:44vw}
+  .plan-in{gap:0 24px}
+  .plan-list button{gap:10px;padding:8px 0}
+  .plan-list b{font-size:clamp(20px,3vw,26px)}
+}
 /* paysage bas (téléphone couché) */
-@media (max-height:480px) and (min-aspect-ratio:1/1){
+@media (max-height:480px) and (min-aspect-ratio:23/20){
   :root{--bar:54px}
   .hero-pitch{bottom:18px;width:min(240px,var(--pitch,26vw))}
   .hp-text{font-size:16px}
@@ -364,7 +389,7 @@ const PHOTO = {
   mid: { x: 1066, y: 716 },              // entre les deux yeux
   pupil: 4.2, iris: 11.5,
   face: { x0: 880, y0: 520, x1: 1340, y1: 940 },   // zone de img/face.jpg (×4)
-  head: { l: 905, r: 1318, top: 415, cx: 1110 },
+  head: { l: 905, r: 1318, top: 415, cx: 1095, cxP: 1085 }, chin: 955,   // cx : entre l’axe du visage et celui de la chevelure
 };
 
 /* =====================================================================
@@ -470,6 +495,7 @@ const lin = v => Math.pow(v, 2.2);
 const hexLin = hex => { const c = new THREE.Color(hex); return [c.r, c.g, c.b]; };
 const TOUCH = matchMedia('(hover:none),(pointer:coarse)').matches;
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PORT_MQ = matchMedia('(max-aspect-ratio: 23/20)');      // même seuil que la feuille de style
 
 const P = { paper: '#F3F0EC', white: '#FBFAF8', cream: '#EDE4D8', blush: '#E6D2CB', rose: '#C48A86', wine: '#6E0F1E', wine2: '#8A1C2D', deep: '#35070F', ink: '#161214', grey: '#BDB6B1', mute: '#6c6460' };
 const FRAMES = { ink: '#1b1618', wine: '#5E0C18', oak: '#B08C64', white: '#F1EEE9' };
@@ -479,9 +505,10 @@ const V = { w: 1, h: 1, asp: 1, dpr: 1, small: false, fov: 56, bias: 0 };
 function measure() {
   const cv = document.getElementById('gl');
   V.w = Math.max(1, (cv && cv.clientWidth) || innerWidth); V.h = Math.max(1, (cv && cv.clientHeight) || innerHeight); V.asp = V.w / V.h;
+  V.land = !PORT_MQ.matches;
   V.small = Math.min(V.w, V.h) < 600;
   V.dpr = Math.min(window.devicePixelRatio || 1, V.small ? 1.6 : 1.75);
-  V.fov = lerp(74, 56, sstep(.6, 1.4, V.asp));                 // champ vertical
+  V.fov = lerp(78, 56, sstep(.6, 1.4, V.asp));                 // champ vertical
   V.bias = rad(lerp(34, 22, sstep(.6, 1.3, V.asp)));           // regard vers le mur des œuvres
 }
 measure();
@@ -974,9 +1001,9 @@ const Hero = {
 
 const HERO_FRAG = /* glsl */`
 uniform sampler2D tPhoto, tFace, tMatte, tText, tScene;
-uniform vec2 uRes, uView, uPhoto, uAnchor, uC, uC0, uMouse;
+uniform vec2 uRes, uView, uPhoto, uAnchor, uC, uC0, uMouse, uScr;
 uniform vec4 uFace, uWin;
-uniform float uDpr, uSZ, uTextZ, uLodP, uLodF, uTap, uPortalR, uPortalA, uText, uWinOn, uScrim, uDim, uHas;
+uniform float uDpr, uSZ, uTextZ, uLodP, uLodF, uTap, uPortalR, uPortalA, uText, uWinOn, uScrim, uFadeB, uDim, uHas;
 uniform vec3 uPaper, uTint;
 
 vec3 photoAt(vec2 pp) {
@@ -997,6 +1024,7 @@ void main() {
     for (int i = 0; i < 8; i++) { float a = float(i) * 0.7853982 + 0.4; acc += photoAt(pp + vec2(cos(a), sin(a)) * uTap); }
     col = acc / 9.0;
   }
+  col = mix(col, uPaper, uFadeB * smoothstep(0.9, 0.99, pp.y / uPhoto.y));   // le bas de la photo se fond dans le papier
   // détourage du sujet : le nom passe derrière elle
   vec2 muv = pp / uPhoto;
   float matte = texture2D(tMatte, vec2(clamp(muv.x, 0.0, 1.0), 1.0 - clamp(muv.y, 0.0, 1.0))).r;
@@ -1008,7 +1036,7 @@ void main() {
   if (tuv.x > 0.0 && tuv.x < 1.0 && tuv.y > 0.0 && tuv.y < 1.0) ta = texture2D(tText, vec2(tuv.x, 1.0 - tuv.y)).r * rev;
   col = mix(col * mix(vec3(1.0), uTint, ta), col, matte);
   // fondu bas (portrait) + assombrissement pendant la plongée
-  col = mix(col, uPaper, uScrim * smoothstep(0.64, 0.86, sp.y / uView.y));
+  col = mix(col, uPaper, uScrim * smoothstep(uScr.x, uScr.y, sp.y / uView.y));
   col *= 1.0 - uDim * smoothstep(0.2, 1.0, length((sp - uC) / uView.y));
   // la pupille s’ouvre sur la galerie
   if (uPortalA > 0.001) {
@@ -1049,7 +1077,7 @@ Hero.init = function () {
       uAnchor: { value: new THREE.Vector2() }, uC: { value: new THREE.Vector2() }, uC0: { value: new THREE.Vector2() }, uMouse: { value: new THREE.Vector2() },
       uFace: { value: new THREE.Vector4(PHOTO.face.x0, PHOTO.face.y0, PHOTO.face.x1, PHOTO.face.y1) }, uWin: { value: new THREE.Vector4() },
       uDpr: { value: 1 }, uSZ: { value: 1 }, uTextZ: { value: 1 }, uLodP: { value: 0 }, uLodF: { value: 0 }, uTap: { value: 0 },
-      uPortalR: { value: 0 }, uPortalA: { value: 0 }, uText: { value: 0 }, uWinOn: { value: 1 }, uScrim: { value: 0 }, uDim: { value: 0 }, uHas: { value: IMG.hero ? 1 : 0 },
+      uPortalR: { value: 0 }, uPortalA: { value: 0 }, uText: { value: 0 }, uWinOn: { value: 1 }, uScrim: { value: 0 }, uScr: { value: new THREE.Vector2(.64, .86) }, uFadeB: { value: 0 }, uDim: { value: 0 }, uHas: { value: IMG.hero ? 1 : 0 },
       uPaper: { value: new THREE.Color(P.paper) }, uTint: { value: new THREE.Color(P.wine) },
     },
     vertexShader: 'void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }',
@@ -1062,13 +1090,41 @@ Hero.init = function () {
   Hero.ready = true;
 };
 
-/* cadrage de la photo et du nom selon l’écran */
+/* cadrage de la photo et du nom selon l’écran : la personne est centrée */
 Hero.layout = function () {
-  const L = {}, land = V.asp >= 1.15, hd = PHOTO.head;
-  if (land) { L.scale = V.h / 1560; L.ox = V.w * .47 - hd.cx * L.scale; }
-  else { L.scale = V.h / 1900; L.ox = V.w / 2 - 990 * L.scale; }
-  L.oy = V.h * 1.015 - PHOTO.h * L.scale;
+  const L = {}, land = V.land, hd = PHOTO.head, heroEl = $('.hero'), pitch = $('.hero-pitch'), inv = $('.hero-invite');
+  heroEl.classList.remove('is-short', 'is-xshort');
   L.land = land;
+  L.scale = V.h / (land ? 1560 : 1800);
+  L.ox = V.w / 2 - (land ? hd.cx : 1105) * L.scale;
+  L.oy = V.h * 1.015 - PHOTO.h * L.scale;
+  /* le nom : de part et d’autre de la tête (paysage) ou empilé au-dessus (portrait) */
+  const c = Hero.textCv.getContext('2d'), font = px => `600 ${px}px Fraunces, Georgia, serif`;
+  c.font = font(100); const wA = c.measureText('LYS').width, wB = c.measureText('SAMA').width;
+  const bar = ($('.bar') || {}).offsetHeight || 64, M = L.mast = {};
+  if (land) {
+    const headL = L.ox + hd.l * L.scale, headR = L.ox + hd.r * L.scale, m = V.w * .03, ov = V.w * .012, headTop = L.oy + hd.top * L.scale;
+    M.xa = headL - V.w * .004; M.xb = headR - ov;
+    M.fs = Math.min(V.h * .27, (V.w - m - M.xb) * 100 / wB, (M.xa - m) * 100 / wA);
+    const cap = M.fs * .7; M.ya = M.yb = Math.max(headTop + cap * .66, bar + 6 + cap);
+  } else {
+    /* portrait : nom empilé, tête juste dessous. Tout est calé sur la hauteur réellement visible
+       (les barres du navigateur mobile mangent le bas) : le visage ne passe jamais sous le texte. */
+    const Hv = Math.min(V.h, heroEl.offsetHeight || V.h), low = Hv < 700, base = L.scale;
+    M.fs = Math.min(V.w * .9 * 100 / wB, Hv * (low ? .145 : .16)); const cap = M.fs * .7;
+    M.ya = bar + (low ? 26 : 30) + cap; M.yb = M.ya + M.fs * .84;
+    const nameB = M.yb - cap * .14, headH = PHOTO.chin - hd.top, gap = Hv * .05, fit = t => (t - gap - nameB) / headH;
+    let top = pitch.offsetTop, sc = fit(top);
+    if (sc < base * .82) { heroEl.classList.add('is-short'); top = pitch.offsetTop; sc = fit(top); }
+    if (sc < base * .72) { heroEl.classList.add('is-xshort'); top = inv.offsetTop - Hv * .015; sc = fit(top); }
+    L.scale = clamp(sc, base * .6, Math.max(base, Math.min(base * 1.18, V.w * .54 / (hd.r - hd.l))));
+    L.ox = V.w / 2 - hd.cxP * L.scale;
+    L.oy = nameB - hd.top * L.scale;
+    const slack = top - gap - (L.oy + PHOTO.chin * L.scale);            // écran haut : on répartit le vide
+    if (slack > 0) { const d = slack * .38; M.ya += d; M.yb += d; L.oy += d; }
+    const chin = L.oy + PHOTO.chin * L.scale, s0 = Math.max(chin - 4, top - Hv * .16), s1 = s0 + clamp((top - s0) / .72, V.h * .06, V.h * .26);
+    L.scr = [s0 / V.h, s1 / V.h];
+  }
   L.C0 = { x: L.ox + PHOTO.eye.x * L.scale, y: L.oy + PHOTO.eye.y * L.scale };
   L.Zmax = (.34 * Math.min(V.w, V.h)) / (PHOTO.iris * L.scale);
   L.DIL = (Math.hypot(V.w, V.h) * .54) / (PHOTO.pupil * L.scale * L.Zmax);
@@ -1084,23 +1140,13 @@ Hero.layout = function () {
 };
 
 Hero.drawMast = function () {
-  const L = Hero.L, td = Math.min(V.dpr, 2), cv = Hero.textCv, hd = PHOTO.head;
+  const L = Hero.L, M = L.mast, td = Math.min(V.dpr, 2), cv = Hero.textCv;
   cv.width = Math.round(V.w * td); cv.height = Math.round(V.h * td);
   const c = cv.getContext('2d'); c.setTransform(td, 0, 0, td, 0, 0);
   c.fillStyle = '#000'; c.fillRect(0, 0, V.w, V.h); c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
-  const font = px => `600 ${px}px Fraunces, Georgia, serif`;
-  c.font = font(100); const wA = c.measureText('LYS').width, wB = c.measureText('SAMA').width;
-  const bar = ($('.bar') || {}).offsetHeight || 64, headTop = L.oy + hd.top * L.scale;
-  if (L.land) {
-    const headL = L.ox + hd.l * L.scale, headR = L.ox + hd.r * L.scale, m = V.w * .03, ov = V.w * .012;
-    const fs = Math.min(V.h * .27, (V.w - m - (headR - ov)) * 100 / wB, ((headL - V.w * .004) - m) * 100 / wA), cap = fs * .7;
-    const y = Math.max(headTop + cap * .66, bar + 6 + cap);
-    c.font = font(fs); c.textAlign = 'right'; c.fillText('LYS', headL - V.w * .004, y); c.textAlign = 'left'; c.fillText('SAMA', headR - ov, y);
-  } else {
-    const fs = Math.min(V.w * .9 * 100 / wB, V.h * .165), cap = fs * .7, bw = wB * fs / 100, x0 = (V.w - bw) / 2;
-    const y2 = Math.max(headTop + cap * .12, bar + 34 + cap + fs * .84), y1 = y2 - fs * .84;
-    c.font = font(fs); c.textAlign = 'left'; c.fillText('LYS', x0, y1); c.fillText('SAMA', x0, y2);
-  }
+  c.font = `600 ${M.fs}px Fraunces, Georgia, serif`;
+  if (L.land) { c.textAlign = 'right'; c.fillText('LYS', M.xa, M.ya); c.textAlign = 'left'; c.fillText('SAMA', M.xb, M.yb); }
+  else { c.textAlign = 'center'; c.fillText('LYS', V.w / 2, M.ya); c.fillText('SAMA', V.w / 2, M.yb); }
   if (Hero.textTex) { Hero.textTex.dispose(); Hero.textTex.needsUpdate = true; }
 };
 
@@ -1118,7 +1164,7 @@ Hero.update = function () {
   u.uLodP.value = Math.max(0, Math.log2(b * tpp)); u.uLodF.value = Math.max(0, Math.log2(4 * b * tpp));
   u.uTap.value = H.blur * 9 / (L.scale * Z);
   u.uPortalR.value = PHOTO.pupil * L.scale * Zp * lerp(1, L.DIL, H.dil); u.uPortalA.value = H.pa;
-  u.uText.value = H.text; u.uDim.value = H.dim; u.uScrim.value = L.land ? 0 : H.scrim * .97;
+  u.uText.value = H.text; u.uDim.value = H.dim; u.uScrim.value = L.land ? 0 : H.scrim * .97; u.uFadeB.value = L.land ? 0 : 1; if (L.scr) u.uScr.value.set(L.scr[0], L.scr[1]);
   u.uMouse.value.set(G.mx * H.par, G.my * H.par);
   if (H.win > .001) { const w = L.win, t = H.win; u.uWin.value.set(lerp(0, w.x0, t), lerp(0, w.y0, t), lerp(V.w, w.x1, t), lerp(V.h, w.y1, t)); u.uWinOn.value = 1; } else u.uWinOn.value = 0;
 };
@@ -1668,8 +1714,8 @@ function frame(time, dt) {
 }
 
 function onResize() {
-  const pw = V.w, ph = V.h; measure();
-  if (G.mode !== 'loading' && Math.abs(V.w - pw) < 1 && Math.abs(V.h - ph) < 1) return;
+  const pw = V.w, ph = V.h, pl = V.land; measure();
+  if (G.mode !== 'loading' && Math.abs(V.w - pw) < 1 && Math.abs(V.h - ph) < 1 && pl === V.land) return;
   if (Gal.renderer) { Gal.renderer.setPixelRatio(V.dpr); Gal.renderer.setSize(V.w, V.h, false); Gal.rt && Gal.rt.setSize(Math.round(V.w * V.dpr), Math.round(V.h * V.dpr)); }
   if (G.mode === 'loading') { Hero.winRect = winRect(); Hero.layout(); return; }
   Hero.layout();
@@ -1733,11 +1779,11 @@ const Snd = {
    FICHE ŒUVRE — la caméra se place face au tableau, on passe de l’un à l’autre
    ===================================================================== */
 const nearAngle = (a, ref) => a + Math.round((ref - a) / (Math.PI * 2)) * Math.PI * 2;
-function focusLayout() { const p = $('.panel'), r = p.getBoundingClientRect(); return { side: getComputedStyle(p).getPropertyValue('--layout').trim() !== 'sheet', pw: r.width, ph: r.height }; }
+function focusLayout() { const p = $('.panel'); return { side: getComputedStyle(p).getPropertyValue('--layout').trim() !== 'sheet', pw: p.offsetWidth, ph: p.offsetHeight, top: p.offsetTop }; }
 function focusPose(it, o = {}) {
   const L = focusLayout(), tan = Math.tan(rad(V.fov / 2)); let wF, hF, cx, cy;
-  if (L.side) { const av = V.w - L.pw; wF = av / V.w * .76; hF = .66; cx = av / 2 / V.w; cy = .5; }
-  else { const top = $('.bar').offsetHeight * .7, av = V.h - L.ph - top; hF = av / V.h * .84; wF = .86; cx = .5; cy = (top + av / 2) / V.h; }
+  if (L.side) { const av = V.w - L.pw, vh = Math.min(V.h, L.ph || V.h); wF = av / V.w * .76; hF = .66 * vh / V.h; cx = av / 2 / V.w; cy = vh / 2 / V.h; }
+  else { const top = $('.bar').offsetHeight * .7, av = Math.min(V.h - L.ph, L.top || V.h) - top; hF = av / V.h * .84; wF = .86; cx = .5; cy = (top + av / 2) / V.h; }
   const d = clamp(Math.max(it.H / (2 * tan * hF), it.W / (2 * tan * V.asp * wF)), 1.4, it.maxD);
   o.x = it.center.x + it.normal.x * d; o.y = it.center.y; o.z = it.center.z + it.normal.z * d;
   o.yaw = Math.atan2(it.normal.x, it.normal.z); o.pitch = 0; o.fov = V.fov; o.ox = .5 - cx; o.oy = .5 - cy;
@@ -2017,6 +2063,7 @@ async function boot() {
   setM(100); await sleep(Math.max(850, 2600 - (performance.now() - t0)));
 
   await reveal();
+  document.body.classList.remove('is-loading'); window.scrollTo(0, 0);
   buildPortalTl();
   if (!REDUCED && window.Lenis) { lenis = new Lenis({ lerp: .085, wheelMultiplier: .8 }); lenis.on('scroll', e => onScroll(e.scroll)); }
   else addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
